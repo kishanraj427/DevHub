@@ -1,0 +1,11 @@
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // hashed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  snippets  Snippet[]
+  stars     Star[]
+  forks     Fork[]
+}

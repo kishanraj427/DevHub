@@ -1,0 +1,8 @@
+model CollectionOnSnippets {
+  snippetId    String
+  collectionId String
+  snippet      Snippet    @relation(fields: [snippetId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
+
+  @@id([snippetId, collectionId])
+}

@@ -1,0 +1,21 @@
+import { authPaths } from './paths/auth.path';
+
+const openApiSpec = {
+  openapi: '3.0.0',
+  info: { title: 'DevHub API', version: '1.0.0' },
+  servers: [{ url: 'http://localhost:3000' }],
+  paths: {
+    ...authPaths,
+  },
+  components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+};
+
+export default openApiSpec;
