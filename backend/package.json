@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "setup": "docker-compose up -d && bunx prisma generate && bunx prisma db push",
+    "setup": "bunx prisma generate && bunx prisma db push",
+    "start": "docker-compose up -d",
     "reset": "docker-compose down",
     "dev": "bun --watch src/index.ts",
     "build": "bun build src/index.ts --outdir ./dist --target node",

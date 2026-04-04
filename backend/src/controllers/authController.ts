@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middleware/auth';
+import { userSchema } from '@devhub/shared-schemas/schemas';
+
+const toJSON = (obj: unknown) => JSON.parse(JSON.stringify(obj));
 
 export const signup = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -15,15 +18,12 @@ export const signup = async (req: Request, res: Response) => {
 
   const hashed = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { email, password: hashed },
+    data: { email, password: hashed, lastLoginAt: new Date() },
   });
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
-  res.status(201).json({
-    token,
-    user: { id: user.id, email: user.email, createdAt: user.createdAt },
-  });
+  res.status(201).json({ token, user: userSchema.parse(toJSON(user)) });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -41,18 +41,19 @@ export const login = async (req: Request, res: Response) => {
     return;
   }
 
+  const updatedUser = await prisma.user.update({
+    where: { id: user.id },
+    data: { lastLoginAt: new Date() },
+  });
+
   const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
 
-  res.json({
-    token,
-    user: { id: user.id, email: user.email, createdAt: user.createdAt },
-  });
+  res.json({ token, user: userSchema.parse(toJSON(updatedUser)) });
 };
 
 export const getMe = async (req: AuthRequest, res: Response) => {
   const user = await prisma.user.findUnique({
     where: { id: req.userId },
-    select: { id: true, email: true, createdAt: true },
   });
 
   if (!user) {
@@ -60,5 +61,5 @@ export const getMe = async (req: AuthRequest, res: Response) => {
     return;
   }
 
-  res.json(user);
+  res.json(userSchema.parse(toJSON(user)));
 };

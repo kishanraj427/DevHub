@@ -1,9 +1,11 @@
 model Collection {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
   description String?
   ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id])
+  owner       User      @relation(fields: [ownerId], references: [id])
   snippets    CollectionOnSnippets[]
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 }

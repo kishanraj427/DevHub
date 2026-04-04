@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { baseSchema } from '../base.schema';
 
 export const signupInputSchema = z.object({
   email: z.email(),
@@ -10,10 +11,9 @@ export const loginInputSchema = z.object({
   password: z.string(),
 });
 
-export const userSchema = z.object({
-  id: z.string(),
+export const userSchema = baseSchema.extend({
   email: z.email(),
-  createdAt: z.iso.datetime(),
+  lastLoginAt: z.iso.datetime().optional().readonly(),
 });
 
 export const authResponseSchema = z.object({

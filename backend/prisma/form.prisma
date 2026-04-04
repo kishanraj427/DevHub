@@ -1,9 +1,11 @@
 model Fork {
-  id              String   @id @default(cuid())
+  id                String    @id @default(cuid())
   originalSnippetId String
-  newSnippetId     String   @unique
-  userId           String
-  createdAt        DateTime @default(now())
+  newSnippetId      String    @unique
+  userId            String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
 
   originalSnippet Snippet @relation("Original", fields: [originalSnippetId], references: [id])
   newSnippet      Snippet @relation("Fork", fields: [newSnippetId], references: [id])

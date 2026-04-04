@@ -1,10 +1,12 @@
 model Star {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
   snippetId String
-  user      User     @relation(fields: [userId], references: [id])
-  snippet   Snippet  @relation(fields: [snippetId], references: [id])
-  createdAt DateTime @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  snippet   Snippet   @relation(fields: [snippetId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@unique([userId, snippetId])
 }
