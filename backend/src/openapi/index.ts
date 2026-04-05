@@ -1,4 +1,5 @@
 import { authPaths } from './paths/auth.path';
+import { crudPaths } from './paths/crud.path';
 
 const openApiSpec = {
   openapi: '3.0.0',
@@ -6,6 +7,7 @@ const openApiSpec = {
   servers: [{ url: 'http://localhost:3000' }],
   paths: {
     ...authPaths,
+    ...crudPaths,
   },
   components: {
     securitySchemes: {

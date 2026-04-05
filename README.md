@@ -14,10 +14,18 @@ A code snippet sharing platform — monorepo powered by Bun workspaces.
 
 ```
 DevHub/
-├── backend/    # Express API server
-├── frontend/   # (coming soon)
-├── shared/     # Shared Zod schemas & types
-├── biome.json  # Linter + formatter config
+├── backend/          # Express API server
+├── frontend/         # (coming soon)
+├── shared/           # Shared Zod schemas & types
+│   └── schemas/
+│       ├── base.schema.ts        # Base schema (id, timestamps)
+│       ├── api.schema.ts         # ApiResponse (success/error)
+│       ├── auth/                 # User + auth schemas
+│       ├── snippet/              # Snippet schema
+│       ├── collection/           # Collection schema
+│       ├── star/                 # Star schema
+│       └── fork/                 # Fork schema
+├── biome.json        # Linter + formatter config
 └── .github/workflows/ci.yml
 ```
 
