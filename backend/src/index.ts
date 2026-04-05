@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import swaggerUi from 'swagger-ui-express';
 import openApiSpec from './openapi/index';
 import authRoutes from './routes/auth.route';
+import crudRoutes from './routes/crud.route';
 
 dotenv.config();
 
@@ -12,13 +13,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api', crudRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
