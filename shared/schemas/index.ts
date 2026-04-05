@@ -5,3 +5,4 @@ export * from './snippet';
 export * from './collection';
 export * from './star';
 export * from './fork';
+export * from './collectionOnSnippets';

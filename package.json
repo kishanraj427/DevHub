@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": ["backend", "frontend", "shared"],
   "scripts": {
+    "test": "bun test",
     "lint": "bunx biome check .",
     "lint:fix": "bunx biome check --fix .",
     "format": "bunx biome format --write ."

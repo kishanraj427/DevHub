@@ -10,16 +10,19 @@ import {
   forkSchema,
 } from '@devhub/shared-schemas/schemas';
 
-const schemas: Record<string, z.ZodType> = {
-  user: userSchema,
-  snippet: snippetSchema,
-  collection: collectionSchema,
-  star: starSchema,
-  fork: forkSchema,
+// Pre-build create schemas by omitting server-generated fields per model
+const baseOmit = { id: true, createdAt: true, updatedAt: true, deletedAt: true } as const;
+
+const createSchemas: Record<string, z.ZodType> = {
+  user: (userSchema as any).omit({ ...baseOmit, lastLoginAt: true }),
+  snippet: (snippetSchema as any).omit({ ...baseOmit, authorId: true }),
+  collection: (collectionSchema as any).omit({ ...baseOmit, ownerId: true }),
+  star: (starSchema as any).omit({ ...baseOmit, userId: true }),
+  fork: (forkSchema as any).omit({ ...baseOmit, userId: true, newSnippetId: true }),
 };
 
 const validateModel = (req: Request, res: Response, next: NextFunction) => {
-  const schema = schemas[req.params.model];
+  const schema = createSchemas[req.params.model as string];
   if (!schema) return next();
 
   const result = schema.safeParse(req.body);
@@ -27,6 +30,7 @@ const validateModel = (req: Request, res: Response, next: NextFunction) => {
     res.status(400).json({ error: 'Validation failed', details: result.error.issues });
     return;
   }
+
   req.body = result.data;
   next();
 };

@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { AuthRequest } from '../middleware/auth';
 import * as crudService from '../services/crudService';
 
 const toJSON = (obj: unknown) => JSON.parse(JSON.stringify(obj));
 const param = (val: string | string[]) => Array.isArray(val) ? val[0] : val;
 
 // GET /api/:model
-export const list = async (req: Request, res: Response) => {
+export const list = async (req: AuthRequest, res: Response) => {
   const model = param(req.params.model);
 
   if (!crudService.isValidModel(model)) {
@@ -36,7 +37,7 @@ export const list = async (req: Request, res: Response) => {
 };
 
 // GET /api/:model/:id
-export const getById = async (req: Request, res: Response) => {
+export const getById = async (req: AuthRequest, res: Response) => {
   const model = param(req.params.model);
   const id = param(req.params.id);
 
@@ -58,7 +59,7 @@ export const getById = async (req: Request, res: Response) => {
 };
 
 // POST /api/:model
-export const create = async (req: Request, res: Response) => {
+export const create = async (req: AuthRequest, res: Response) => {
   const model = param(req.params.model);
 
   if (!crudService.isValidModel(model)) {
@@ -66,8 +67,17 @@ export const create = async (req: Request, res: Response) => {
     return;
   }
 
+  let data = req.body;
+
+    // Inject user ID based on model
+  if (model === 'snippet') data = { ...data, authorId: req.userId };
+  if (model === 'collection') data = { ...data, ownerId: req.userId };
+  if (model === 'star') data = { ...data, userId: req.userId };
+  if (model === 'fork') data = { ...data, userId: req.userId };
+  // user model might not need it, but you could set something else
+
   try {
-    const record = await crudService.create(model, req.body);
+    const record = await crudService.create(model, data);
     res.status(201).json(toJSON(record));
   } catch (error) {
     res.status(500).json({ error: 'Failed to create record' });
@@ -75,7 +85,7 @@ export const create = async (req: Request, res: Response) => {
 };
 
 // PUT /api/:model/:id
-export const update = async (req: Request, res: Response) => {
+export const update = async (req: AuthRequest, res: Response) => {
   const model = param(req.params.model);
   const id = param(req.params.id);
 
@@ -99,7 +109,7 @@ export const update = async (req: Request, res: Response) => {
 };
 
 // DELETE /api/:model/:id (soft delete)
-export const remove = async (req: Request, res: Response) => {
+export const remove = async (req: AuthRequest, res: Response) => {
   const model = param(req.params.model);
   const id = param(req.params.id);
 

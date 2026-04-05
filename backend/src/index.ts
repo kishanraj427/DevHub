@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import openApiSpec from './openapi/index';
 import authRoutes from './routes/auth.route';
 import crudRoutes from './routes/crud.route';
+import collectionSnippetRoutes from './routes/collectionSnippet.route';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/collections', collectionSnippetRoutes);
 app.use('/api', crudRoutes);
 
 app.listen(PORT, () => {
