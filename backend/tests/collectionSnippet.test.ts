@@ -43,7 +43,9 @@ describe("Collection Snippets API", () => {
         .get("/api/collections/col-123/snippets")
         .set("Authorization", auth);
       if (res.status === 200) {
-        expect(Array.isArray(res.body)).toBe(true);
+        expect(res.body).toHaveProperty("snippets");
+        expect(res.body).toHaveProperty("success", true);
+        expect(Array.isArray(res.body.snippets)).toBe(true);
       } else {
         expect(res.status).toBe(500);
       }
