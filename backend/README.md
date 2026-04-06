@@ -235,30 +235,33 @@ backend/
 │   ├── lib/
 │   │   └── prisma.ts           # Prisma client instance
 │   ├── controllers/
-│   │   ├── authController.ts   # Auth HTTP handlers
-│   │   ├── crudController.ts   # Generic CRUD HTTP handlers
-│   │   ├── starController.ts   # Star HTTP handlers
-│   │   ├── forkController.ts   # Fork HTTP handlers
-│   │   ├── searchController.ts # Search HTTP handlers
-│   │   └── gistController.ts   # Gist export HTTP handlers
+│   │   ├── authController.ts
+│   │   ├── collectionSnippetController.ts
+│   │   ├── crudController.ts
+│   │   ├── forkController.ts
+│   │   ├── gistController.ts
+│   │   ├── searchController.ts
+│   │   └── starController.ts
 │   ├── services/
-│   │   ├── authService.ts      # Auth business logic + DB
-│   │   ├── crudService.ts      # Generic CRUD operations
-│   │   ├── starService.ts      # Star business logic
-│   │   ├── forkService.ts      # Fork business logic
-│   │   ├── searchService.ts    # Full-text search logic
-│   │   └── gistService.ts      # Gist export job queuing
+│   │   ├── authService.ts
+│   │   ├── collectionSnippetService.ts
+│   │   ├── crudService.ts
+│   │   ├── forkService.ts
+│   │   ├── gistService.ts
+│   │   ├── searchService.ts
+│   │   └── starService.ts
 │   ├── middleware/
 │   │   ├── auth.ts             # JWT authentication
-│   │   ├── validate.ts         # Zod request validation
-│   │   └── rateLimiter.ts      # Redis-backed rate limiting
+│   │   ├── rateLimiter.ts      # Redis-backed rate limiting
+│   │   └── validate.ts         # Zod request validation
 │   ├── routes/
-│   │   ├── auth.route.ts       # Auth route definitions
-│   │   ├── crud.route.ts       # Generic CRUD routes
-│   │   ├── star.route.ts       # Star routes
-│   │   ├── fork.route.ts       # Fork routes
-│   │   ├── search.route.ts     # Search routes
-│   │   └── gist.route.ts       # Gist export routes
+│   │   ├── auth.route.ts
+│   │   ├── collectionSnippet.route.ts
+│   │   ├── crud.route.ts
+│   │   ├── fork.route.ts
+│   │   ├── gist.route.ts
+│   │   ├── search.route.ts
+│   │   └── star.route.ts
 │   ├── queue/
 │   │   └── gistQueue.ts        # BullMQ queue definition
 │   ├── worker/
@@ -267,21 +270,36 @@ backend/
 │   │   ├── index.ts            # OpenAPI spec entry
 │   │   ├── helpers.ts          # Schema conversion utils
 │   │   └── paths/
-│   │       ├── auth.path.ts    # Auth endpoint docs
-│   │       ├── crud.path.ts    # CRUD endpoint docs
-│   │       ├── star.path.ts    # Star endpoint docs
-│   │       ├── fork.path.ts    # Fork endpoint docs
-│   │       ├── search.path.ts  # Search endpoint docs
-│   │       └── gist.path.ts    # Gist export endpoint docs
-│   └── generated/prisma/       # Generated Prisma client (gitignored)
+│   │       ├── auth.path.ts
+│   │       ├── collectionSnippet.path.ts
+│   │       ├── crud.path.ts
+│   │       ├── fork.path.ts
+│   │       ├── gist.path.ts
+│   │       ├── search.path.ts
+│   │       └── star.path.ts
+│   └── generated/prisma/             # Generated Prisma client (gitignored)
 ├── prisma/
-│   ├── schema.prisma           # Prisma config + datasource
-│   ├── user.prisma             # User model
-│   ├── snippet.prisma          # Snippet model
-│   ├── collection.prisma       # Collection model
+│   ├── schema.prisma                 # Prisma config + datasource + preview features
+│   ├── collection.prisma
 │   ├── collection_on_snippets.prisma
-│   ├── star.prisma             # Star model
-│   └── form.prisma             # Fork model
+│   ├── form.prisma                   # Fork model
+│   ├── snippet.prisma
+│   ├── star.prisma
+│   ├── user.prisma
+│   └── migrations/
+│       └── 20260406000000_add_snippet_fulltext_search/
+│           └── migration.sql         # GIN index for full-text search
+├── tests/
+│   ├── auth.test.ts
+│   ├── collectionSnippet.test.ts
+│   ├── crud.test.ts
+│   ├── fork.test.ts
+│   ├── gist.test.ts
+│   ├── health.test.ts
+│   ├── schemas.test.ts
+│   ├── search.test.ts
+│   ├── star.test.ts
+│   └── validate.test.ts
 ├── docker-compose.yml
 ├── prisma.config.ts
 ├── package.json

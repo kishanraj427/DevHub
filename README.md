@@ -14,19 +14,101 @@ A code snippet sharing platform — monorepo powered by Bun workspaces.
 
 ```
 DevHub/
-├── backend/          # Express API server
-├── frontend/         # (coming soon)
-├── shared/           # Shared Zod schemas & types
+├── backend/
+│   ├── src/
+│   │   ├── index.ts
+│   │   ├── lib/
+│   │   │   └── prisma.ts
+│   │   ├── controllers/
+│   │   │   ├── authController.ts
+│   │   │   ├── collectionSnippetController.ts
+│   │   │   ├── crudController.ts
+│   │   │   ├── forkController.ts
+│   │   │   ├── gistController.ts
+│   │   │   ├── searchController.ts
+│   │   │   └── starController.ts
+│   │   ├── services/
+│   │   │   ├── authService.ts
+│   │   │   ├── collectionSnippetService.ts
+│   │   │   ├── crudService.ts
+│   │   │   ├── forkService.ts
+│   │   │   ├── gistService.ts
+│   │   │   ├── searchService.ts
+│   │   │   └── starService.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.ts
+│   │   │   ├── rateLimiter.ts
+│   │   │   └── validate.ts
+│   │   ├── routes/
+│   │   │   ├── auth.route.ts
+│   │   │   ├── collectionSnippet.route.ts
+│   │   │   ├── crud.route.ts
+│   │   │   ├── fork.route.ts
+│   │   │   ├── gist.route.ts
+│   │   │   ├── search.route.ts
+│   │   │   └── star.route.ts
+│   │   ├── queue/
+│   │   │   └── gistQueue.ts
+│   │   ├── worker/
+│   │   │   └── gistWorker.ts
+│   │   └── openapi/
+│   │       ├── index.ts
+│   │       ├── helpers.ts
+│   │       └── paths/
+│   │           ├── auth.path.ts
+│   │           ├── collectionSnippet.path.ts
+│   │           ├── crud.path.ts
+│   │           ├── fork.path.ts
+│   │           ├── gist.path.ts
+│   │           ├── search.path.ts
+│   │           └── star.path.ts
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   ├── collection.prisma
+│   │   ├── collection_on_snippets.prisma
+│   │   ├── form.prisma
+│   │   ├── snippet.prisma
+│   │   ├── star.prisma
+│   │   ├── user.prisma
+│   │   └── migrations/
+│   │       └── 20260406000000_add_snippet_fulltext_search/
+│   │           └── migration.sql
+│   ├── tests/
+│   │   ├── auth.test.ts
+│   │   ├── collectionSnippet.test.ts
+│   │   ├── crud.test.ts
+│   │   ├── fork.test.ts
+│   │   ├── gist.test.ts
+│   │   ├── health.test.ts
+│   │   ├── schemas.test.ts
+│   │   ├── search.test.ts
+│   │   ├── star.test.ts
+│   │   └── validate.test.ts
+│   ├── docker-compose.yml
+│   ├── prisma.config.ts
+│   ├── package.json
+│   └── tsconfig.json
+├── shared/
 │   └── schemas/
-│       ├── base.schema.ts        # Base schema (id, timestamps)
-│       ├── api.schema.ts         # ApiResponse (success/error)
-│       ├── auth/                 # User + auth schemas
-│       ├── snippet/              # Snippet schema + search response
-│       ├── collection/           # Collection schema
-│       ├── star/                 # Star schema + toggle/count responses
-│       └── fork/                 # Fork schema + create/count responses
-├── biome.json        # Linter + formatter config
-└── .github/workflows/ci.yml
+│       ├── index.ts
+│       ├── api.schema.ts
+│       ├── base.schema.ts
+│       ├── auth/
+│       │   └── auth.schema.ts
+│       ├── collection/
+│       │   └── collection.schema.ts
+│       ├── collectionOnSnippets/
+│       │   └── collectionOnSnippets.schema.ts
+│       ├── fork/
+│       │   └── fork.schema.ts
+│       ├── snippet/
+│       │   └── snippet.schema.ts
+│       └── star/
+│           └── star.schema.ts
+├── frontend/         # (coming soon)
+├── biome.json
+├── bunfig.toml
+└── package.json
 ```
 
 ## Prerequisites
