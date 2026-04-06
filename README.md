@@ -21,10 +21,10 @@ DevHub/
 │       ├── base.schema.ts        # Base schema (id, timestamps)
 │       ├── api.schema.ts         # ApiResponse (success/error)
 │       ├── auth/                 # User + auth schemas
-│       ├── snippet/              # Snippet schema
+│       ├── snippet/              # Snippet schema + search response
 │       ├── collection/           # Collection schema
-│       ├── star/                 # Star schema
-│       └── fork/                 # Fork schema
+│       ├── star/                 # Star schema + toggle/count responses
+│       └── fork/                 # Fork schema + create/count responses
 ├── biome.json        # Linter + formatter config
 └── .github/workflows/ci.yml
 ```

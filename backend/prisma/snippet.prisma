@@ -11,8 +11,11 @@ model Snippet {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
 
+  search_vector  Unsupported("tsvector")? @default(dbgenerated())
+
   stars          Star[]
   forks          Fork[]          @relation("Original")
   forkedFrom     Fork?           @relation("Fork")
   collections    CollectionOnSnippets[]
+  @@index([title, description])
 }

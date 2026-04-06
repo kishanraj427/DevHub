@@ -11,3 +11,16 @@ export const snippetSchema = baseSchema.extend({
 });
 
 export type Snippet = z.infer<typeof snippetSchema>;
+
+export const searchSnippetsResponseSchema = z.object({
+  snippets: z.array(
+    snippetSchema.extend({
+      _count: z.object({ stars: z.number() }),
+    }),
+  ),
+  success: z.literal(true),
+});
+
+export type SearchSnippetsResponse = z.infer<
+  typeof searchSnippetsResponseSchema
+>;

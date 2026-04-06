@@ -8,6 +8,7 @@ import crudRoutes from "./routes/crud.route";
 import starRoutes from "./routes/star.route";
 import forkRoutes from "./routes/fork.route";
 import collectionSnippetRoutes from "./routes/collectionSnippet.route";
+import searchRoutes from "./routes/search.route";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionSnippetRoutes);
 app.use("/api/stars", starRoutes);
 app.use("/api/forks", forkRoutes);
+app.use("/api/search", searchRoutes);
 app.use("/api", crudRoutes);
 
 app.listen(PORT, () => {

@@ -115,7 +115,7 @@ Supported models: `user`, `snippet`, `collection`, `star`, `fork`
 | `star`       | `userId`, `snippetId`              | —                              |
 | `fork`       | `userId`, `originalSnippetId`      | —                              |
 
-Example: `GET /api/snippet?page=1&limit=10&sortBy=title&order=asc&language=typescript&search=hello`
+Example: `GET /api/snippet?page=1&limit=10&sortBy=title&order=asc&language=typescript`
 
 Response:
 
@@ -126,6 +126,53 @@ Response:
   "page": 1,
   "limit": 10,
   "totalPages": 5
+}
+```
+
+### Stars
+
+| Method | Endpoint                               | Description                    | Auth |
+| ------ | -------------------------------------- | ------------------------------ | ---- |
+| GET    | `/api/stars`                           | Get all stars for current user | Yes  |
+| POST   | `/api/stars/snippets/:snippetId`       | Toggle star on a snippet       | Yes  |
+| GET    | `/api/stars/snippets/:snippetId/count` | Get star count for a snippet   | Yes  |
+
+### Forks
+
+| Method | Endpoint                      | Description                  | Auth |
+| ------ | ----------------------------- | ---------------------------- | ---- |
+| POST   | `/api/forks/:snippetId`       | Fork a snippet               | Yes  |
+| GET    | `/api/forks/:snippetId/count` | Get fork count for a snippet | Yes  |
+
+### Search
+
+| Method | Endpoint                  | Description                             | Auth |
+| ------ | ------------------------- | --------------------------------------- | ---- |
+| GET    | `/api/search/snippets?q=` | Full-text search across public snippets | Yes  |
+
+Searches `title`, `description`, and `code` fields. Returns snippets with star count.
+
+```
+GET /api/search/snippets?q=typescript
+```
+
+Response:
+
+```json
+{
+  "snippets": [
+    {
+      "id": "...",
+      "title": "TypeScript utility types",
+      "description": "...",
+      "code": "...",
+      "language": "typescript",
+      "isPublic": true,
+      "authorId": "...",
+      "_count": { "stars": 12 }
+    }
+  ],
+  "success": true
 }
 ```
 
@@ -167,21 +214,34 @@ backend/
 │   │   └── prisma.ts           # Prisma client instance
 │   ├── controllers/
 │   │   ├── authController.ts   # Auth HTTP handlers
-│   │   └── crudController.ts   # Generic CRUD HTTP handlers
+│   │   ├── crudController.ts   # Generic CRUD HTTP handlers
+│   │   ├── starController.ts   # Star HTTP handlers
+│   │   ├── forkController.ts   # Fork HTTP handlers
+│   │   └── searchController.ts # Search HTTP handlers
 │   ├── services/
 │   │   ├── authService.ts      # Auth business logic + DB
-│   │   └── crudService.ts      # Generic CRUD operations
+│   │   ├── crudService.ts      # Generic CRUD operations
+│   │   ├── starService.ts      # Star business logic
+│   │   ├── forkService.ts      # Fork business logic
+│   │   └── searchService.ts    # Full-text search logic
 │   ├── middleware/
 │   │   ├── auth.ts             # JWT authentication
 │   │   └── validate.ts         # Zod request validation
 │   ├── routes/
 │   │   ├── auth.route.ts       # Auth route definitions
-│   │   └── crud.route.ts       # Generic CRUD routes
+│   │   ├── crud.route.ts       # Generic CRUD routes
+│   │   ├── star.route.ts       # Star routes
+│   │   ├── fork.route.ts       # Fork routes
+│   │   └── search.route.ts     # Search routes
 │   ├── openapi/
 │   │   ├── index.ts            # OpenAPI spec entry
 │   │   ├── helpers.ts          # Schema conversion utils
 │   │   └── paths/
-│   │       └── auth.path.ts    # Auth endpoint docs
+│   │       ├── auth.path.ts    # Auth endpoint docs
+│   │       ├── crud.path.ts    # CRUD endpoint docs
+│   │       ├── star.path.ts    # Star endpoint docs
+│   │       ├── fork.path.ts    # Fork endpoint docs
+│   │       └── search.path.ts  # Search endpoint docs
 │   └── generated/prisma/       # Generated Prisma client (gitignored)
 ├── prisma/
 │   ├── schema.prisma           # Prisma config + datasource
