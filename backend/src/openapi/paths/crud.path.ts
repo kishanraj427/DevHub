@@ -130,6 +130,7 @@ const modelFilterParams: Record<
 const generateCrudPaths = (model: string, tag: string, schema: z.ZodType) => ({
   [`/api/${model}`]: {
     get: {
+      operationId: `list${tag}s`,
       summary: `List ${tag}s`,
       tags: [tag],
       security: [{ BearerAuth: [] }],
@@ -159,6 +160,7 @@ const generateCrudPaths = (model: string, tag: string, schema: z.ZodType) => ({
       },
     },
     post: {
+      operationId: `create${tag}`,
       summary: `Create ${tag}`,
       tags: [tag],
       security: [{ BearerAuth: [] }],
@@ -184,6 +186,7 @@ const generateCrudPaths = (model: string, tag: string, schema: z.ZodType) => ({
   },
   [`/api/${model}/{id}`]: {
     get: {
+      operationId: `get${tag}ById`,
       summary: `Get ${tag} by ID`,
       tags: [tag],
       security: [{ BearerAuth: [] }],
@@ -204,6 +207,7 @@ const generateCrudPaths = (model: string, tag: string, schema: z.ZodType) => ({
       },
     },
     put: {
+      operationId: `update${tag}`,
       summary: `Update ${tag}`,
       tags: [tag],
       security: [{ BearerAuth: [] }],
@@ -232,6 +236,7 @@ const generateCrudPaths = (model: string, tag: string, schema: z.ZodType) => ({
       },
     },
     delete: {
+      operationId: `delete${tag}`,
       summary: `Delete ${tag}`,
       tags: [tag],
       security: [{ BearerAuth: [] }],

@@ -8,6 +8,7 @@ import { toSchema } from "../helpers";
 export const collectionSnippetPaths = {
   "/api/collections/{collectionId}/snippets": {
     get: {
+      operationId: "listSnippetsInCollection",
       summary: "List snippets in a collection",
       tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],
@@ -37,6 +38,7 @@ export const collectionSnippetPaths = {
   },
   "/api/collections/{collectionId}/snippets/{snippetId}": {
     post: {
+      operationId: "addSnippetToCollection",
       summary: "Add snippet to collection",
       tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],
@@ -74,6 +76,7 @@ export const collectionSnippetPaths = {
       },
     },
     delete: {
+      operationId: "removeSnippetFromCollection",
       summary: "Remove snippet from collection",
       tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],

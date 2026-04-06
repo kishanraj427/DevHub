@@ -11,6 +11,7 @@ import { toSchema } from "../helpers";
 export const authPaths = {
   "/api/auth/signup": {
     post: {
+      operationId: "signup",
       summary: "Register a new user",
       tags: ["Auth"],
       requestBody: {
@@ -45,6 +46,7 @@ export const authPaths = {
   },
   "/api/auth/login": {
     post: {
+      operationId: "login",
       summary: "Login with credentials",
       tags: ["Auth"],
       requestBody: {
@@ -79,6 +81,7 @@ export const authPaths = {
   },
   "/api/auth/me": {
     get: {
+      operationId: "getCurrentUser",
       summary: "Get current user",
       tags: ["Auth"],
       security: [{ BearerAuth: [] }],

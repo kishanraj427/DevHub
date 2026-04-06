@@ -7,10 +7,10 @@ import {
 import { z } from "zod";
 import { toSchema } from "../helpers";
 
-
 export const starPaths = {
   "/api/stars": {
     get: {
+      operationId: "getStarsForUser",
       summary: "Get all stars for the authenticated user",
       tags: ["Stars"],
       security: [{ BearerAuth: [] }],
@@ -45,6 +45,7 @@ export const starPaths = {
   },
   "/api/stars/snippets/{snippetId}": {
     get: {
+      operationId: "toggleStar",
       summary: "Toggle star on a snippet",
       tags: ["Stars"],
       security: [{ BearerAuth: [] }],
@@ -83,6 +84,7 @@ export const starPaths = {
   },
   "/api/stars/{starId}/count": {
     get: {
+      operationId: "getStarsCount",
       summary: "Get star count for a snippet",
       tags: ["Stars"],
       security: [{ BearerAuth: [] }],
