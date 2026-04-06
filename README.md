@@ -53,19 +53,19 @@ bun run dev
 
 Run from the project root:
 
-| Command | Description |
-|---------|-------------|
-| `bun i` | Install all workspace dependencies |
-| `bun run lint` | Lint entire project |
-| `bun run lint:fix` | Lint and auto-fix |
-| `bun run format` | Format entire project |
+| Command            | Description                        |
+| ------------------ | ---------------------------------- |
+| `bun i`            | Install all workspace dependencies |
+| `bun run lint`     | Lint entire project                |
+| `bun run lint:fix` | Lint and auto-fix                  |
+| `bun run format`   | Format entire project              |
 
 See [backend/README.md](backend/README.md) for backend-specific commands.
 
 ## Workspaces
 
-| Package | Path | Description |
-|---------|------|-------------|
-| `backend` | `./backend` | Express API with Prisma + PostgreSQL |
-| `@devhub/shared-schemas` | `./shared` | Shared Zod schemas and TypeScript types |
-| `frontend` | `./frontend` | Frontend app (coming soon) |
+| Package                  | Path         | Description                             |
+| ------------------------ | ------------ | --------------------------------------- |
+| `backend`                | `./backend`  | Express API with Prisma + PostgreSQL    |
+| `@devhub/shared-schemas` | `./shared`   | Shared Zod schemas and TypeScript types |
+| `frontend`               | `./frontend` | Frontend app (coming soon)              |

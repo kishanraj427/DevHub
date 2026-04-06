@@ -1,3 +1,3 @@
-export * from './auth.schema';
+export * from "./auth.schema";
 // export * from './snippet.schema';
 // export * from './collection.schema';

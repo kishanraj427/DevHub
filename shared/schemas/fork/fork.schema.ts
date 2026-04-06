@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { baseSchema } from '../base.schema';
+import { z } from "zod";
+import { baseSchema } from "../base.schema";
 
 export const forkSchema = baseSchema.extend({
   originalSnippetId: z.string().min(1),

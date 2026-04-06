@@ -1,79 +1,115 @@
-import { apiErrorSchema, collectionOnSnippetsSchema, snippetSchema } from '@devhub/shared-schemas/schemas/';
-import { toSchema } from '../helpers';
+import {
+  apiErrorSchema,
+  collectionOnSnippetsSchema,
+  snippetSchema,
+} from "@devhub/shared-schemas/schemas/";
+import { toSchema } from "../helpers";
 
 export const collectionSnippetPaths = {
-  '/api/collections/{collectionId}/snippets': {
+  "/api/collections/{collectionId}/snippets": {
     get: {
-      summary: 'List snippets in a collection',
-      tags: ['Collection Snippets'],
+      summary: "List snippets in a collection",
+      tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],
       parameters: [
-        { name: 'collectionId', in: 'path' as const, required: true, schema: { type: 'string' } },
+        {
+          name: "collectionId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "string" },
+        },
       ],
       responses: {
         200: {
-          description: 'List of snippets in collection',
+          description: "List of snippets in collection",
           content: {
-            'application/json': {
-              schema: { type: 'array', items: toSchema(snippetSchema) },
+            "application/json": {
+              schema: { type: "array", items: toSchema(snippetSchema) },
             },
           },
         },
         401: {
-          description: 'Unauthorized',
-          content: { 'application/json': { schema: toSchema(apiErrorSchema) } },
+          description: "Unauthorized",
+          content: { "application/json": { schema: toSchema(apiErrorSchema) } },
         },
       },
     },
   },
-  '/api/collections/{collectionId}/snippets/{snippetId}': {
+  "/api/collections/{collectionId}/snippets/{snippetId}": {
     post: {
-      summary: 'Add snippet to collection',
-      tags: ['Collection Snippets'],
+      summary: "Add snippet to collection",
+      tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],
       parameters: [
-        { name: 'collectionId', in: 'path' as const, required: true, schema: { type: 'string' } },
-        { name: 'snippetId', in: 'path' as const, required: true, schema: { type: 'string' } },
+        {
+          name: "collectionId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "string" },
+        },
+        {
+          name: "snippetId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "string" },
+        },
       ],
       responses: {
         201: {
-          description: 'Snippet added to collection',
-          content: { 'application/json': { schema: toSchema(collectionOnSnippetsSchema) } },
+          description: "Snippet added to collection",
+          content: {
+            "application/json": {
+              schema: toSchema(collectionOnSnippetsSchema),
+            },
+          },
         },
         409: {
-          description: 'Snippet already in collection',
-          content: { 'application/json': { schema: toSchema(apiErrorSchema) } },
+          description: "Snippet already in collection",
+          content: { "application/json": { schema: toSchema(apiErrorSchema) } },
         },
         401: {
-          description: 'Unauthorized',
-          content: { 'application/json': { schema: toSchema(apiErrorSchema) } },
+          description: "Unauthorized",
+          content: { "application/json": { schema: toSchema(apiErrorSchema) } },
         },
       },
     },
     delete: {
-      summary: 'Remove snippet from collection',
-      tags: ['Collection Snippets'],
+      summary: "Remove snippet from collection",
+      tags: ["Collection Snippets"],
       security: [{ BearerAuth: [] }],
       parameters: [
-        { name: 'collectionId', in: 'path' as const, required: true, schema: { type: 'string' } },
-        { name: 'snippetId', in: 'path' as const, required: true, schema: { type: 'string' } },
+        {
+          name: "collectionId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "string" },
+        },
+        {
+          name: "snippetId",
+          in: "path" as const,
+          required: true,
+          schema: { type: "string" },
+        },
       ],
       responses: {
         200: {
-          description: 'Snippet removed from collection',
+          description: "Snippet removed from collection",
           content: {
-            'application/json': {
-              schema: { type: 'object', properties: { message: { type: 'string' } } },
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: { message: { type: "string" } },
+              },
             },
           },
         },
         404: {
-          description: 'Snippet not in collection',
-          content: { 'application/json': { schema: toSchema(apiErrorSchema) } },
+          description: "Snippet not in collection",
+          content: { "application/json": { schema: toSchema(apiErrorSchema) } },
         },
         401: {
-          description: 'Unauthorized',
-          content: { 'application/json': { schema: toSchema(apiErrorSchema) } },
+          description: "Unauthorized",
+          content: { "application/json": { schema: toSchema(apiErrorSchema) } },
         },
       },
     },

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { baseSchema } from '../base.schema';
+import { z } from "zod";
+import { baseSchema } from "../base.schema";
 
 export const collectionSchema = baseSchema.extend({
   name: z.string().min(1),

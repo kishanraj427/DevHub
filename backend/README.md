@@ -77,47 +77,48 @@ PORT=3000
 
 ### Auth
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/auth/signup` | Register a new user | No |
-| POST | `/api/auth/login` | Login with credentials | No |
-| GET | `/api/auth/me` | Get current user | Yes |
+| Method | Endpoint           | Description            | Auth |
+| ------ | ------------------ | ---------------------- | ---- |
+| POST   | `/api/auth/signup` | Register a new user    | No   |
+| POST   | `/api/auth/login`  | Login with credentials | No   |
+| GET    | `/api/auth/me`     | Get current user       | Yes  |
 
 ### Generic CRUD (all models)
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/:model` | List records (paginated) | Yes |
-| GET | `/api/:model/:id` | Get record by ID | Yes |
-| POST | `/api/:model` | Create record | Yes |
-| PUT | `/api/:model/:id` | Update record | Yes |
-| DELETE | `/api/:model/:id` | Soft delete record | Yes |
+| Method | Endpoint          | Description              | Auth |
+| ------ | ----------------- | ------------------------ | ---- |
+| GET    | `/api/:model`     | List records (paginated) | Yes  |
+| GET    | `/api/:model/:id` | Get record by ID         | Yes  |
+| POST   | `/api/:model`     | Create record            | Yes  |
+| PUT    | `/api/:model/:id` | Update record            | Yes  |
+| DELETE | `/api/:model/:id` | Soft delete record       | Yes  |
 
 Supported models: `user`, `snippet`, `collection`, `star`, `fork`
 
 #### List Query Params
 
-| Param | Default | Description |
-|-------|---------|-------------|
-| `page` | `1` | Page number |
-| `limit` | `20` | Items per page (max: 100) |
-| `sortBy` | `createdAt` | Field to sort by |
-| `order` | `desc` | Sort direction: `asc` or `desc` |
-| `search` | — | Text search across searchable fields |
+| Param    | Default     | Description                          |
+| -------- | ----------- | ------------------------------------ |
+| `page`   | `1`         | Page number                          |
+| `limit`  | `20`        | Items per page (max: 100)            |
+| `sortBy` | `createdAt` | Field to sort by                     |
+| `order`  | `desc`      | Sort direction: `asc` or `desc`      |
+| `search` | —           | Text search across searchable fields |
 
 #### Model-specific Filters
 
-| Model | Filters | Searchable Fields |
-|-------|---------|-------------------|
-| `snippet` | `language`, `isPublic`, `authorId` | `title`, `description`, `code` |
-| `collection` | `ownerId` | `name`, `description` |
-| `user` | `email` | `email` |
-| `star` | `userId`, `snippetId` | — |
-| `fork` | `userId`, `originalSnippetId` | — |
+| Model        | Filters                            | Searchable Fields              |
+| ------------ | ---------------------------------- | ------------------------------ |
+| `snippet`    | `language`, `isPublic`, `authorId` | `title`, `description`, `code` |
+| `collection` | `ownerId`                          | `name`, `description`          |
+| `user`       | `email`                            | `email`                        |
+| `star`       | `userId`, `snippetId`              | —                              |
+| `fork`       | `userId`, `originalSnippetId`      | —                              |
 
 Example: `GET /api/snippet?page=1&limit=10&sortBy=title&order=asc&language=typescript&search=hello`
 
 Response:
+
 ```json
 {
   "data": [...],
@@ -198,13 +199,13 @@ backend/
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `bun i` | Install dependencies |
-| `bun run start` | Start PostgreSQL container |
-| `bun run reset` | Stop PostgreSQL container |
-| `bun run setup` | Generate Prisma client + push schema to DB |
-| `bun run dev` | Start dev server with hot reload |
-| `bun run test` | Run tests |
-| `bun run test:watch` | Run tests in watch mode |
-| `bun run build` | Build for production |
+| Command              | Description                                |
+| -------------------- | ------------------------------------------ |
+| `bun i`              | Install dependencies                       |
+| `bun run start`      | Start PostgreSQL container                 |
+| `bun run reset`      | Stop PostgreSQL container                  |
+| `bun run setup`      | Generate Prisma client + push schema to DB |
+| `bun run dev`        | Start dev server with hot reload           |
+| `bun run test`       | Run tests                                  |
+| `bun run test:watch` | Run tests in watch mode                    |
+| `bun run build`      | Build for production                       |

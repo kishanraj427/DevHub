@@ -1,22 +1,24 @@
-import { authPaths } from './paths/auth.path';
-import { crudPaths } from './paths/crud.path';
-import { collectionSnippetPaths } from './paths/collectionSnippet.path';
+import { authPaths } from "./paths/auth.path";
+import { crudPaths } from "./paths/crud.path";
+import { collectionSnippetPaths } from "./paths/collectionSnippet.path";
+import { starPaths } from "./paths/star.path";
 
 const openApiSpec = {
-  openapi: '3.0.0',
-  info: { title: 'DevHub API', version: '1.0.0' },
-  servers: [{ url: 'http://localhost:3000' }],
+  openapi: "3.0.0",
+  info: { title: "DevHub API", version: "1.0.0" },
+  servers: [{ url: "http://localhost:3000" }],
   paths: {
     ...authPaths,
     ...crudPaths,
     ...collectionSnippetPaths,
+    ...starPaths,
   },
   components: {
     securitySchemes: {
       BearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
       },
     },
   },

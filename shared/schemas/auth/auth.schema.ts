@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { baseSchema } from '../base.schema';
+import { z } from "zod";
+import { baseSchema } from "../base.schema";
 
 export const signupInputSchema = z.object({
   email: z.email(),

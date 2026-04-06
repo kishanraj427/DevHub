@@ -5,90 +5,96 @@ import {
   authResponseSchema,
   apiSuccessSchema,
   apiErrorSchema,
-} from '@devhub/shared-schemas/schemas/';
-import { toSchema } from '../helpers';
+} from "@devhub/shared-schemas/schemas/";
+import { toSchema } from "../helpers";
 
 export const authPaths = {
-  '/api/auth/signup': {
+  "/api/auth/signup": {
     post: {
-      summary: 'Register a new user',
-      tags: ['Auth'],
+      summary: "Register a new user",
+      tags: ["Auth"],
       requestBody: {
         required: true,
         content: {
-          'application/json': { schema: toSchema(signupInputSchema) },
+          "application/json": { schema: toSchema(signupInputSchema) },
         },
       },
       responses: {
         201: {
-          description: 'User created',
+          description: "User created",
           content: {
-            'application/json': { schema: toSchema(apiSuccessSchema(authResponseSchema)) },
+            "application/json": {
+              schema: toSchema(apiSuccessSchema(authResponseSchema)),
+            },
           },
         },
         400: {
-          description: 'Validation error',
+          description: "Validation error",
           content: {
-            'application/json': { schema: toSchema(apiErrorSchema) },
+            "application/json": { schema: toSchema(apiErrorSchema) },
           },
         },
         409: {
-          description: 'Email already exists',
+          description: "Email already exists",
           content: {
-            'application/json': { schema: toSchema(apiErrorSchema) },
+            "application/json": { schema: toSchema(apiErrorSchema) },
           },
         },
       },
     },
   },
-  '/api/auth/login': {
+  "/api/auth/login": {
     post: {
-      summary: 'Login with credentials',
-      tags: ['Auth'],
+      summary: "Login with credentials",
+      tags: ["Auth"],
       requestBody: {
         required: true,
         content: {
-          'application/json': { schema: toSchema(loginInputSchema) },
+          "application/json": { schema: toSchema(loginInputSchema) },
         },
       },
       responses: {
         200: {
-          description: 'Login successful',
+          description: "Login successful",
           content: {
-            'application/json': { schema: toSchema(apiSuccessSchema(authResponseSchema)) },
+            "application/json": {
+              schema: toSchema(apiSuccessSchema(authResponseSchema)),
+            },
           },
         },
         400: {
-          description: 'Validation error',
+          description: "Validation error",
           content: {
-            'application/json': { schema: toSchema(apiErrorSchema) },
+            "application/json": { schema: toSchema(apiErrorSchema) },
           },
         },
         401: {
-          description: 'Invalid credentials',
+          description: "Invalid credentials",
           content: {
-            'application/json': { schema: toSchema(apiErrorSchema) },
+            "application/json": { schema: toSchema(apiErrorSchema) },
           },
         },
       },
     },
   },
-  '/api/auth/me': {
+  "/api/auth/me": {
     get: {
-      summary: 'Get current user',
-      tags: ['Auth'],
+      summary: "Get current user",
+      tags: ["Auth"],
       security: [{ BearerAuth: [] }],
       responses: {
         200: {
-          description: 'Current user',
+          description: "Current user",
           content: {
-            'application/json': { schema: toSchema(apiSuccessSchema(userSchema)) },
+            "application/json": {
+              schema: toSchema(apiSuccessSchema(userSchema)),
+            },
           },
         },
         401: {
-          description: 'Unauthorized',
+          description: "Unauthorized",
           content: {
-            'application/json': { schema: toSchema(apiErrorSchema) },
+            "application/json": { schema: toSchema(apiErrorSchema) },
           },
         },
       },

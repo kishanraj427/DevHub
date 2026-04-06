@@ -1,1 +1,1 @@
-export * from './snippet.schema';
+export * from "./snippet.schema";

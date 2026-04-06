@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { userSchema } from '@devhub/shared-schemas/schemas';
-import * as authService from '../services/authService';
+import { Request, Response } from "express";
+import { AuthRequest } from "../middleware/auth";
+import { userSchema } from "@devhub/shared-schemas/schemas";
+import * as authService from "../services/authService";
 
 const toJSON = (obj: unknown) => JSON.parse(JSON.stringify(obj));
 
@@ -10,14 +10,16 @@ export const signup = async (req: Request, res: Response) => {
 
   const existing = await authService.findUserByEmail(email);
   if (existing) {
-    res.status(409).json({ error: 'Email already exists' });
+    res.status(409).json({ error: "Email already exists" });
     return;
   }
 
   const user = await authService.createUser(email, password);
   const token = authService.generateToken(user.id);
 
-  res.status(201).json({ token, user: userSchema.parse(toJSON(user)) });
+  res
+    .status(201)
+    .json({ token, user: userSchema.parse(toJSON(user)), success: true });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -25,29 +27,33 @@ export const login = async (req: Request, res: Response) => {
 
   const user = await authService.findUserByEmail(email);
   if (!user) {
-    res.status(401).json({ error: 'Invalid credentials' });
+    res.status(401).json({ error: "Invalid credentials", success: false });
     return;
   }
 
   const valid = await authService.verifyPassword(password, user.password);
   if (!valid) {
-    res.status(401).json({ error: 'Invalid credentials' });
+    res.status(401).json({ error: "Invalid credentials", success: false });
     return;
   }
 
   const updatedUser = await authService.updateLastLogin(user.id);
   const token = authService.generateToken(user.id);
 
-  res.json({ token, user: userSchema.parse(toJSON(updatedUser)) });
+  res.json({
+    token,
+    user: userSchema.parse(toJSON(updatedUser)),
+    success: true,
+  });
 };
 
 export const getMe = async (req: AuthRequest, res: Response) => {
   const user = await authService.findUserById(req.userId!);
 
   if (!user) {
-    res.status(404).json({ error: 'User not found' });
+    res.status(404).json({ error: "User not found", success: false });
     return;
   }
 
-  res.json(userSchema.parse(toJSON(user)));
+  res.json({ user: userSchema.parse(toJSON(user)), success: true });
 };

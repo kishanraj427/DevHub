@@ -1,12 +1,18 @@
-import prisma from '../lib/prisma';
+import prisma from "../lib/prisma";
 
-export const addSnippetToCollection = (collectionId: string, snippetId: string) => {
+export const addSnippetToCollection = (
+  collectionId: string,
+  snippetId: string,
+) => {
   return prisma.collectionOnSnippets.create({
     data: { collectionId, snippetId },
   });
 };
 
-export const removeSnippetFromCollection = (collectionId: string, snippetId: string) => {
+export const removeSnippetFromCollection = (
+  collectionId: string,
+  snippetId: string,
+) => {
   return prisma.collectionOnSnippets.delete({
     where: { snippetId_collectionId: { snippetId, collectionId } },
   });
@@ -26,7 +32,10 @@ export const getCollectionsBySnippet = (snippetId: string) => {
   });
 };
 
-export const isSnippetInCollection = (collectionId: string, snippetId: string) => {
+export const isSnippetInCollection = (
+  collectionId: string,
+  snippetId: string,
+) => {
   return prisma.collectionOnSnippets.findUnique({
     where: { snippetId_collectionId: { snippetId, collectionId } },
   });

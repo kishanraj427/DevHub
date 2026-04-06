@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import prisma from '../lib/prisma';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import prisma from "../lib/prisma";
 
 export const findUserByEmail = (email: string) => {
   return prisma.user.findUnique({ where: { email } });
@@ -29,5 +29,5 @@ export const updateLastLogin = (userId: string) => {
 };
 
 export const generateToken = (userId: string) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+  return jwt.sign({ userId }, process.env.JWT_SECRET!, { expiresIn: "7d" });
 };

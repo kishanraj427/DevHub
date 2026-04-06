@@ -1,1 +1,1 @@
-export * from './collectionOnSnippets.schema';
+export * from "./collectionOnSnippets.schema";

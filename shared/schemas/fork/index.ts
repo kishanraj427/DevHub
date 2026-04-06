@@ -1,1 +1,1 @@
-export * from './fork.schema';
+export * from "./fork.schema";

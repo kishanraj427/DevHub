@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const collectionOnSnippetsSchema = z.object({
   snippetId: z.string().min(1),

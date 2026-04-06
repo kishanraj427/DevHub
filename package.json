@@ -1,11 +1,18 @@
 {
   "name": "devhub",
   "private": true,
-  "workspaces": ["backend", "frontend", "shared"],
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
   "scripts": {
     "test": "bun test",
     "lint": "bunx biome check .",
     "lint:fix": "bunx biome check --fix .",
-    "format": "bunx biome format --write ."
+    "format": "bunx biome format --write . && bunx prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
   }
 }
