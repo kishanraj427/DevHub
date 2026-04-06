@@ -2,6 +2,7 @@ import { authPaths } from "./paths/auth.path";
 import { crudPaths } from "./paths/crud.path";
 import { collectionSnippetPaths } from "./paths/collectionSnippet.path";
 import { starPaths } from "./paths/star.path";
+import { forkPaths } from "./paths/fork.path";
 
 const openApiSpec = {
   openapi: "3.0.0",
@@ -12,6 +13,7 @@ const openApiSpec = {
     ...crudPaths,
     ...collectionSnippetPaths,
     ...starPaths,
+    ...forkPaths,
   },
   components: {
     securitySchemes: {

@@ -21,9 +21,8 @@ export const toggleStarService = async (userId: string, snippetId: string) => {
 export const getStarsForUserService = async (userId: string) => {
   const stars = await prisma.star.findMany({
     where: { userId },
-    select: { snippetId: true }, // Only select the snippetId to return an array of starred snippet IDs
   });
-  return stars.map((star) => star.snippetId);
+  return stars;
 };
 
 export const getStarsCountService = async (snippetId: string) => {

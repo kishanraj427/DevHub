@@ -44,7 +44,7 @@ export const starPaths = {
     },
   },
   "/api/stars/snippets/{snippetId}": {
-    get: {
+    post: {
       operationId: "toggleStar",
       summary: "Toggle star on a snippet",
       tags: ["Stars"],

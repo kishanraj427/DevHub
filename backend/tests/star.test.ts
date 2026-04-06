@@ -21,8 +21,8 @@ describe("Star API Routes", () => {
       expect(res.status).toBe(401);
     });
 
-    test("GET /api/stars/snippets/:snippetId returns 401 without token", async () => {
-      const res = await request(app).get("/api/stars/snippets/some-snippet-id");
+    test("POST /api/stars/snippets/:snippetId returns 401 without token", async () => {
+      const res = await request(app).post("/api/stars/snippets/some-snippet-id");
       expect(res.status).toBe(401);
     });
 
@@ -44,6 +44,11 @@ describe("Star API Routes", () => {
         expect(res.body).toHaveProperty("stars");
         expect(res.body).toHaveProperty("success", true);
         expect(Array.isArray(res.body.stars)).toBe(true);
+        if (res.body.stars.length > 0) {
+          expect(res.body.stars[0]).toHaveProperty("id");
+          expect(res.body.stars[0]).toHaveProperty("userId");
+          expect(res.body.stars[0]).toHaveProperty("snippetId");
+        }
       } else {
         expect(res.status).toBe(500);
       }
@@ -51,10 +56,10 @@ describe("Star API Routes", () => {
   });
 
   // --- Toggle star ---
-  describe("GET /api/stars/snippets/:snippetId (toggle)", () => {
+  describe("POST /api/stars/snippets/:snippetId (toggle)", () => {
     test("returns starred status with valid token", async () => {
       const res = await request(app)
-        .get("/api/stars/snippets/non-existent-snippet")
+        .post("/api/stars/snippets/non-existent-snippet")
         .set("Authorization", auth);
       if (res.status === 200) {
         expect(res.body).toHaveProperty("starred");
@@ -71,7 +76,7 @@ describe("Star API Routes", () => {
 
       // First toggle - should star
       const res1 = await request(app)
-        .get(`/api/stars/snippets/${snippetId}`)
+        .post(`/api/stars/snippets/${snippetId}`)
         .set("Authorization", auth);
 
       if (res1.status === 200) {
@@ -79,7 +84,7 @@ describe("Star API Routes", () => {
 
         // Second toggle - should unstar
         const res2 = await request(app)
-          .get(`/api/stars/snippets/${snippetId}`)
+          .post(`/api/stars/snippets/${snippetId}`)
           .set("Authorization", auth);
 
         if (res2.status === 200) {
