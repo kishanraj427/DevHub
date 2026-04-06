@@ -5,6 +5,7 @@ model Snippet {
   code        String    @db.Text
   language    String
   isPublic    Boolean   @default(true)
+  gistUrl     String?
   authorId    String
   author      User      @relation(fields: [authorId], references: [id])
   createdAt   DateTime  @default(now())

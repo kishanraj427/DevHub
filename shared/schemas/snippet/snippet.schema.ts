@@ -7,6 +7,7 @@ export const snippetSchema = baseSchema.extend({
   code: z.string().min(1),
   language: z.string().min(1),
   isPublic: z.boolean().default(true),
+  gistUrl: z.string().url().optional().nullable().readonly(),
   authorId: z.string().readonly(),
 });
 

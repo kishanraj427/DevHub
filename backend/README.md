@@ -152,6 +152,28 @@ Response:
 
 Searches `title`, `description`, and `code` fields. Returns snippets with star count.
 
+### Gist Export
+
+| Method | Endpoint           | Description                     | Auth |
+| ------ | ------------------ | ------------------------------- | ---- |
+| POST   | `/api/gist/export` | Export a snippet to GitHub Gist | Yes  |
+
+Queues an async background job to export the snippet as a GitHub Gist. Pass your GitHub personal access token as the `Authorization: Bearer <github-token>` header.
+
+Request body:
+
+```json
+{ "snippetId": "..." }
+```
+
+Response:
+
+```json
+{ "message": "Gist export started" }
+```
+
+Once processed, the snippet's `gistUrl` field is updated with the Gist URL.
+
 ```
 GET /api/search/snippets?q=typescript
 ```
@@ -196,7 +218,7 @@ All schemas live in `shared/schemas/` and extend a `baseSchema`:
 ```
 baseSchema (id, createdAt, updatedAt, deletedAt — all readonly)
 ├── userSchema      + email, lastLoginAt (readonly)
-├── snippetSchema   + title, description, code, language, isPublic, authorId (readonly)
+├── snippetSchema   + title, description, code, language, isPublic, gistUrl (readonly), authorId (readonly)
 ├── collectionSchema + name, description, ownerId (readonly)
 ├── starSchema      + userId (readonly), snippetId
 └── forkSchema      + originalSnippetId, newSnippetId (readonly), userId (readonly)
@@ -217,22 +239,30 @@ backend/
 │   │   ├── crudController.ts   # Generic CRUD HTTP handlers
 │   │   ├── starController.ts   # Star HTTP handlers
 │   │   ├── forkController.ts   # Fork HTTP handlers
-│   │   └── searchController.ts # Search HTTP handlers
+│   │   ├── searchController.ts # Search HTTP handlers
+│   │   └── gistController.ts   # Gist export HTTP handlers
 │   ├── services/
 │   │   ├── authService.ts      # Auth business logic + DB
 │   │   ├── crudService.ts      # Generic CRUD operations
 │   │   ├── starService.ts      # Star business logic
 │   │   ├── forkService.ts      # Fork business logic
-│   │   └── searchService.ts    # Full-text search logic
+│   │   ├── searchService.ts    # Full-text search logic
+│   │   └── gistService.ts      # Gist export job queuing
 │   ├── middleware/
 │   │   ├── auth.ts             # JWT authentication
-│   │   └── validate.ts         # Zod request validation
+│   │   ├── validate.ts         # Zod request validation
+│   │   └── rateLimiter.ts      # Redis-backed rate limiting
 │   ├── routes/
 │   │   ├── auth.route.ts       # Auth route definitions
 │   │   ├── crud.route.ts       # Generic CRUD routes
 │   │   ├── star.route.ts       # Star routes
 │   │   ├── fork.route.ts       # Fork routes
-│   │   └── search.route.ts     # Search routes
+│   │   ├── search.route.ts     # Search routes
+│   │   └── gist.route.ts       # Gist export routes
+│   ├── queue/
+│   │   └── gistQueue.ts        # BullMQ queue definition
+│   ├── worker/
+│   │   └── gistWorker.ts       # BullMQ worker — exports snippet to GitHub Gist
 │   ├── openapi/
 │   │   ├── index.ts            # OpenAPI spec entry
 │   │   ├── helpers.ts          # Schema conversion utils
@@ -241,7 +271,8 @@ backend/
 │   │       ├── crud.path.ts    # CRUD endpoint docs
 │   │       ├── star.path.ts    # Star endpoint docs
 │   │       ├── fork.path.ts    # Fork endpoint docs
-│   │       └── search.path.ts  # Search endpoint docs
+│   │       ├── search.path.ts  # Search endpoint docs
+│   │       └── gist.path.ts    # Gist export endpoint docs
 │   └── generated/prisma/       # Generated Prisma client (gitignored)
 ├── prisma/
 │   ├── schema.prisma           # Prisma config + datasource
