@@ -1,10 +1,15 @@
-import { describe, test, expect } from "bun:test";
+import { describe, test, expect, mock } from "bun:test";
 import request from "supertest";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import path from "path";
 
 dotenv.config({ path: path.resolve(import.meta.dir, "../.env") });
+
+// Mock the gist service to avoid connecting to Redis/BullMQ in tests
+mock.module("../src/services/gistService", () => ({
+  addGistExportJob: mock(async () => ({ id: "mock-job-id" })),
+}));
 
 import app from "../src/index";
 

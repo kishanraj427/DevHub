@@ -9,6 +9,7 @@ import starRoutes from "./routes/star.route";
 import forkRoutes from "./routes/fork.route";
 import collectionSnippetRoutes from "./routes/collectionSnippet.route";
 import searchRoutes from "./routes/search.route";
+import gistRoutes from "./routes/gist.route";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/collections", collectionSnippetRoutes);
 app.use("/api/stars", starRoutes);
 app.use("/api/forks", forkRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/gist", gistRoutes);
 app.use("/api", crudRoutes);
 
 app.listen(PORT, () => {

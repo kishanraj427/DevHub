@@ -8,6 +8,12 @@ export const exportGistController = async (req: AuthRequest, res: Response) => {
     const userId = req.userId!;
     const githubToken = req.headers.authorization?.replace("Bearer ", "");
 
+    if (!snippetId) {
+      return res
+        .status(400)
+        .json({ error: "snippetId is required", success: false });
+    }
+
     await addGistExportJob(snippetId, userId, githubToken!);
 
     res.json({ message: "Gist export started", success: true });
