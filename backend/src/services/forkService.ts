@@ -10,7 +10,14 @@ export const createForkService = async (userId: string, snippetId: string) => {
     throw new Error("Snippet not found");
   }
   // Create a new snippet based on the original snippet's data
-  const { id, createdAt, updatedAt, deletedAt, authorId: _, ...snippetData } = snippet;
+  const {
+    id,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    authorId: _,
+    ...snippetData
+  } = snippet;
   const newSnippet = await prisma.snippet.create({
     data: {
       ...snippetData,

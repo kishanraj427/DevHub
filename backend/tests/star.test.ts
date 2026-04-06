@@ -22,7 +22,9 @@ describe("Star API Routes", () => {
     });
 
     test("POST /api/stars/snippets/:snippetId returns 401 without token", async () => {
-      const res = await request(app).post("/api/stars/snippets/some-snippet-id");
+      const res = await request(app).post(
+        "/api/stars/snippets/some-snippet-id",
+      );
       expect(res.status).toBe(401);
     });
 
