@@ -36,8 +36,8 @@ export const getStartForUser = async (req: AuthRequest, res: Response) => {
 
 export const getStarsCount = async (req: Request, res: Response) => {
   try {
-    const starId = req.params.starId as string;
-    const count = await getStarsCountService(starId);
+    const snippetId = req.params.snippetId as string;
+    const count = await getStarsCountService(snippetId);
     res.json({ count, success: true });
   } catch (error) {
     console.error("Error fetching stars count:", error);

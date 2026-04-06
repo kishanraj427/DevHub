@@ -26,9 +26,9 @@ export const getStarsForUserService = async (userId: string) => {
   return stars.map((star) => star.snippetId);
 };
 
-export const getStarsCountService = async (starId: string) => {
+export const getStarsCountService = async (snippetId: string) => {
   const count = await prisma.star.count({
-    where: { snippetId: starId },
+    where: { snippetId },
   });
   return count;
 };

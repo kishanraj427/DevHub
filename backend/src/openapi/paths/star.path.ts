@@ -82,7 +82,7 @@ export const starPaths = {
       },
     },
   },
-  "/api/stars/{starId}/count": {
+  "/api/stars/snippets/{snippetId}/count": {
     get: {
       operationId: "getStarsCount",
       summary: "Get star count for a snippet",

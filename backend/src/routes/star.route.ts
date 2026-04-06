@@ -10,6 +10,6 @@ const starRoutes = Router();
 
 starRoutes.get("/", authenticate, getStartForUser);
 starRoutes.get("/snippets/:snippetId", authenticate, toggleStar);
-starRoutes.get("/:starId/count", authenticate, getStarsCount);
+starRoutes.get("/snippets/:snippetId/count", authenticate, getStarsCount);
 
 export default starRoutes;
