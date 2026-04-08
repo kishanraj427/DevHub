@@ -24,13 +24,13 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/collections", collectionSnippetRoutes);
-app.use("/api/stars", starRoutes);
-app.use("/api/forks", forkRoutes);
-app.use("/api/search", searchRoutes);
-app.use("/api/gist", gistRoutes);
-app.use("/api", crudRoutes);
+app.use("/auth", authRoutes);
+app.use("/collections", collectionSnippetRoutes);
+app.use("/stars", starRoutes);
+app.use("/forks", forkRoutes);
+app.use("/search", searchRoutes);
+app.use("/gist", gistRoutes);
+app.use("/", crudRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

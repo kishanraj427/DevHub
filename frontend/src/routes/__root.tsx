@@ -1,8 +1,10 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import { Theme } from '@radix-ui/themes'
+import Footer from '../components/layout/Footer'
+import Header from '../components/layout/Header'
+import { TooltipProvider } from '../components/ui/tooltip'
 
 import appCss from '../styles.css?url'
 
@@ -39,10 +41,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <Header />
-        {children}
-        <Footer />
+      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(59,130,246,0.25)] selection:text-(--sea-ink)">
+        <Theme hasBackground={false}>
+          <TooltipProvider delayDuration={300}>
+            <Header />
+            {children}
+            <Footer />
+          </TooltipProvider>
+        </Theme>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
