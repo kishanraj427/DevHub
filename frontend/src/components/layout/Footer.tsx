@@ -1,5 +1,5 @@
 import { Box, Flex, Link, Text } from '@radix-ui/themes'
-import { Tooltip, TooltipContent, TooltipTrigger } from '#/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 const XIcon = () => (
   <svg viewBox="0 0 16 16" aria-hidden="true" width="20" height="20" fill="currentColor">

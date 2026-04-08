@@ -1,6 +1,6 @@
 import { Link as RouterLink } from '@tanstack/react-router'
 import { Box, Flex, Link, Text } from '@radix-ui/themes'
-import { Tooltip, TooltipContent, TooltipTrigger } from '#/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import ThemeToggle from './ThemeToggle'
 
 const XIcon = () => (
