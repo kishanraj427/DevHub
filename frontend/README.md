@@ -1,201 +1,180 @@
-Welcome to your new TanStack Start app!
+# DevHub Frontend
 
-# Getting Started
+A dark-first code snippet sharing platform built with TanStack Start (React SSR), TanStack Router, Radix UI, and Tailwind CSS v4.
 
-To run this application:
+---
+
+## Getting Started
 
 ```bash
+# From repo root
 bun install
-bun --bun run dev
+cd frontend
+bun run dev
 ```
 
-# Building For Production
-
-To build this application for production:
+## Build for Production
 
 ```bash
-bun --bun run build
+bun run build
 ```
 
 ## Testing
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+Uses [Vitest](https://vitest.dev/) with `jsdom` for component tests.
 
 ```bash
-bun --bun run test
+# Run all frontend tests
+bun run test
+
+# Run a specific test file
+bun run test tests/auth.test.ts
 ```
+
+---
+
+## Routing Architecture
+
+This project uses [TanStack Router](https://tanstack.com/router) with file-based routing.
+
+### Route Tree
+
+```
+src/routes/
+  __root.tsx          ← HTML shell (no layout chrome — just Theme + TooltipProvider)
+  _app.tsx            ← Pathless layout: adds Header + Footer (main app pages only)
+  _app/
+    index.tsx         ← Home page  →  /
+  signup.tsx          ← Sign up page  →  /signup
+  login.tsx           ← Login page   →  /login
+```
+
+### Layout System
+
+There are **two separate layout layers**:
+
+| Layer       | File             | What it adds                                   | Who sees it                        |
+| ----------- | ---------------- | ---------------------------------------------- | ---------------------------------- |
+| Root shell  | `__root.tsx`     | HTML document, Theme provider, TooltipProvider | Every page                         |
+| App layout  | `_app.tsx`       | `<Header>` + `<Footer>`                        | Main app pages (`/`, future pages) |
+| Auth layout | `AuthLayout.tsx` | Background blobs, `AuthHeader`, `AuthFooter`   | `/signup`, `/login`                |
+
+**Key principle:** Auth pages use their own `AuthLayout` — they do **not** go through `_app.tsx`, so they never show the main `Header`/`Footer`.
+
+To add a new **main app page** (with header/footer), create it under `src/routes/_app/`:
+
+```
+src/routes/_app/dashboard.tsx   →  /dashboard
+```
+
+To add a new **auth-style page** (no header/footer), create it at the top level:
+
+```
+src/routes/reset-password.tsx   →  /reset-password
+```
+
+---
+
+## Auth Flow
+
+### How signup works
+
+1. User fills in `SignUpForm` (`src/components/auth/SignUpForm.tsx`)
+2. Form validates with React Hook Form + Zod (`signupInputSchema` from shared schemas)
+3. On submit → `useSignUp` hook calls `POST /api/auth/signup` via the generated client
+4. On success → JWT stored in `localStorage` via `setToken()` → redirect to `/`
+5. On API error → error shown in red banner above submit button
+
+### How login works
+
+Same flow through `LoginForm` + `useLogin` → `POST /api/auth/login`.
+
+### Token storage
+
+```ts
+// src/lib/auth.ts
+getToken(); // → string | null from localStorage
+setToken(t); // → stores under key 'devhub_token'
+clearToken(); // → removes token (use on logout)
+```
+
+The token is read directly from localStorage when building API request headers. No React context or global store in this iteration.
+
+### API client
+
+Generated from the backend OpenAPI spec at `src/generated/client/backend/sdk.gen.ts`. Import API functions directly:
+
+```ts
+import { signup, login, getSnippets } from "@/generated/client/backend";
+```
+
+To regenerate after backend changes:
+
+```bash
+# From repo root
+bun run openapi
+```
+
+---
+
+## Component Structure
+
+See `COMPONENTS.md` at the repo root for the full catalogue. Summary:
+
+```
+src/components/
+  ui/           ← Reusable primitives (Button, Input, Label, Checkbox, Dialog, DropdownMenu, Tabs, Tooltip)
+  auth/         ← Auth-specific (AuthLayout, AuthHeader, AuthFooter, SignUpForm, LoginForm, PasswordStrengthBar)
+  layout/       ← Main app chrome (Header, Footer, ThemeToggle)
+
+src/hooks/
+  useSignUp.ts  ← TanStack Query mutation for signup
+  useLogin.ts   ← TanStack Query mutation for login
+
+src/lib/
+  auth.ts       ← localStorage token helpers
+  utils.ts      ← cn() class merging helper
+```
+
+---
 
 ## Styling
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+Uses [Tailwind CSS v4](https://tailwindcss.com/) with CSS custom properties for theming.
 
-### Removing Tailwind CSS
+**Dark-first:** `:root` = dark values. `[data-theme="light"]` = light overrides.
 
-If you prefer not to use Tailwind CSS:
+**Tailwind v4 CSS variable syntax:**
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `bun install @tailwindcss/vite tailwindcss -D`
+```tsx
+// Correct (v4)
+className = "text-(--sea-ink) bg-(--chip-bg)";
+
+// Wrong (v3 style — do not use)
+className = "text-[var(--sea-ink)]";
+```
+
+Key CSS variables (defined in `src/styles.css`):
+
+| Variable             | Value                | Use                       |
+| -------------------- | -------------------- | ------------------------- |
+| `--bg-base`          | `#0b1120`            | Page background           |
+| `--sea-ink`          | `#f1f5f9`            | Body text                 |
+| `--sea-ink-soft`     | `#94a3b8`            | Muted text                |
+| `--lagoon`           | `#3b82f6`            | Primary accent (blue)     |
+| `--palm`             | `#8b5cf6`            | Secondary accent (violet) |
+| `--accent`           | `#3b82f6`            | Tailwind gradient start   |
+| `--accent-secondary` | `#8b5cf6`            | Tailwind gradient end     |
+| `--chip-bg`          | `rgba(30,41,59,0.9)` | Input / chip background   |
+| `--line`             | `#334155`            | Borders                   |
+
+---
 
 ## Linting & Formatting
 
-This project uses [Biome](https://biomejs.dev/) for linting and formatting. The following scripts are available:
-
 ```bash
-bun --bun run lint
-bun --bun run format
-bun --bun run check
+bun run lint     # Biome check
+bun run format   # Biome + Prettier
 ```
 
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "My App" },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-});
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from "@tanstack/react-start";
-
-const getServerTime = createServerFn({
-  method: "GET",
-}).handler(async () => {
-  return new Date().toISOString();
-});
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    getServerTime().then(setTime);
-  }, []);
-
-  return <div>Server time: {time}</div>;
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-import { json } from "@tanstack/react-start";
-
-export const Route = createFileRoute("/api/hello")({
-  server: {
-    handlers: {
-      GET: () => json({ message: "Hello, World!" }),
-    },
-  },
-});
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/people")({
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json();
-  },
-  component: PeopleComponent,
-});
-
-function PeopleComponent() {
-  const data = Route.useLoaderData();
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  );
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+Biome config is at the repo root (`/biome.json`). CSS files are excluded from Biome and handled by Prettier only.

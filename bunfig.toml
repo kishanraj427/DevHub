@@ -1,2 +1,5 @@
 [install]
 workspaces = true
+
+[test]
+root = "./backend"
