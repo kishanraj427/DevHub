@@ -1,7 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/2.4.5/schema.json",
+  "root": true,
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "linter": {
     "enabled": true,
@@ -16,6 +21,26 @@
     "lineWidth": 100
   },
   "files": {
-    "ignore": ["node_modules", "dist", "src/generated"]
-  }
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/src/generated",
+      "!**/src/routeTree.gen.ts",
+      "!**/*.css"
+    ]
+  },
+  "overrides": [
+    {
+      "includes": ["frontend/**"],
+      "formatter": {
+        "indentStyle": "tab"
+      },
+      "javascript": {
+        "formatter": {
+          "quoteStyle": "double"
+        }
+      }
+    }
+  ]
 }

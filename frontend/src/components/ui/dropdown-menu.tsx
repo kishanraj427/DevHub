@@ -142,7 +142,10 @@ function DropdownMenuRadioItem({
     >
       <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Circle size={8} className="fill-[var(--lagoon)] text-[var(--lagoon)]" />
+          <Circle
+            size={8}
+            className="fill-[var(--lagoon)] text-[var(--lagoon)]"
+          />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}

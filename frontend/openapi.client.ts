@@ -1,8 +1,5 @@
 import { createClient, type UserConfig } from "@hey-api/openapi-ts";
-import {
-  createDocument,
-  type ZodOpenApiObject,
-} from "zod-openapi";
+import { createDocument, type ZodOpenApiObject } from "zod-openapi";
 import openApiSpec from "../backend/src/openapi/index";
 
 const createOpenAPISchema = (openApi: ZodOpenApiObject) => {
