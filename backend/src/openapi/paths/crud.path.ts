@@ -57,7 +57,7 @@ const modelFilterParams: Record<
   {
     name: string;
     in: "query";
-    schema: Record<string, string>;
+    schema: Record<string, string | string[]>;
     description: string;
   }[]
 > = {
@@ -79,7 +79,7 @@ const modelFilterParams: Record<
     {
       name: "isPublic",
       in: "query",
-      schema: { type: "string", enum: "true,false" },
+      schema: { type: "string", enum: ["true", "false"] },
       description: "Filter by visibility",
     },
     {
